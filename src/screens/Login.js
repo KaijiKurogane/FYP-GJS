@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { compose } from 'recompose';
 import {
   Button,
   Card,
@@ -14,9 +15,50 @@ import {
   InputGroupText,
   Row
 } from "reactstrap";
+import { withFirebase } from '../components/Firebase';
+
+const SignInPage = () => (
+  <div>
+    <SignInForm />
+  </div>
+);
+
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+  error: null,
+};
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { ...INITIAL_STATE };
+  }
+
+  onSubmit = event => {
+    // const { email, password } = this.state;
+
+    // this.props.firebase
+    //   .doSignInWithEmailAndPassword(email, password)
+    //   .then(() => {
+    //     this.setState({ ...INITIAL_STATE });
+    //     this.props.history.push("Dashboard");
+    //   })
+    //   .catch(error => {
+    //     this.setState({ error });
+    //   });
+
+    event.preventDefault();
+    this.props.history.push('/Dashboard')
+  };
+
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
   render() {
+    const { email, password, error } = this.state;
+    const isInvalid = password === '' || email === '';
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -25,7 +67,7 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <Form>
+                    <Form onSubmit={this.onSubmit}>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
                       <InputGroup className="mb-3">
@@ -35,8 +77,11 @@ class Login extends Component {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
+                          name="email"
+                          value={email}
+                          onChange={this.onChange}
                           type="text"
-                          placeholder="Username"
+                          placeholder="Email Address"
                           autoComplete="username"
                         />
                       </InputGroup>
@@ -47,6 +92,9 @@ class Login extends Component {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
+                          name="password"
+                          value={password}
+                          onChange={this.onChange}
                           type="password"
                           placeholder="Password"
                           autoComplete="current-password"
@@ -54,42 +102,13 @@ class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">
+                          {error && <p>{error.message}</p>}
+                          <Button  disabled={isInvalid} type="submit" color="primary" className="px-4">
                             Login
-                          </Button>
-                        </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">
-                            Forgot password?
                           </Button>
                         </Col>
                       </Row>
                     </Form>
-                  </CardBody>
-                </Card>
-                <Card
-                  className="text-white bg-primary py-5 d-md-down-none"
-                  style={{ width: "44%" }}
-                >
-                  <CardBody className="text-center">
-                    <div>
-                      <h2>Sign up</h2>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        dolore magna aliqua.
-                      </p>
-                      <Link to="/register">
-                        <Button
-                          color="primary"
-                          className="mt-3"
-                          active
-                          tabIndex={-1}
-                        >
-                          Register Now!
-                        </Button>
-                      </Link>
-                    </div>
                   </CardBody>
                 </Card>
               </CardGroup>
@@ -101,4 +120,11 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const SignInForm = compose(
+  withRouter,
+  withFirebase,
+)(Login);
+
+export default SignInPage;
+
+export { SignInForm };

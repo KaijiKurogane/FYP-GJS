@@ -72,7 +72,7 @@ class DefaultLayout extends Component {
                       />
                     ) : null;
                   })}
-                  <Redirect from="/" to="/AboutUs" />
+                  <Redirect from="/" to="/login" />
                 </Switch>
               </Suspense>
             </Container>
@@ -87,5 +87,4 @@ class DefaultLayout extends Component {
     );
   }
 }
-
 export default DefaultLayout;

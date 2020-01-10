@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import { renderRoutes } from 'react-router-config';
 import "./App.scss";
 
 const loading = () => (
@@ -13,10 +12,6 @@ const DefaultLayout = React.lazy(() => import("./containers/DefaultLayout"));
 // Pages
 
 const Login = React.lazy(() => import("./screens/Login"));
-const Register = React.lazy(() => import("./screens/Register"));
-// const Page404 = React.lazy(() => import("./screens/"));
-// const Page500 = React.lazy(() => import("./views/Pages/Page500"));
-
 class App extends Component {
   render() {
     return (
@@ -29,24 +24,6 @@ class App extends Component {
               name="Login Page"
               render={props => <Login {...props} />}
             />
-            <Route
-              exact
-              path="/register"
-              name="Register Page"
-              render={props => <Register {...props} />}
-            />
-            {/* <Route
-              exact
-              path="/404"
-              name="Page 404"
-              render={props => <Page404 {...props} />}
-            />
-            <Route
-              exact
-              path="/500"
-              name="Page 500"
-              render={props => <Page500 {...props} />}
-            /> */}
             <Route
               path="/"
               name="Home"

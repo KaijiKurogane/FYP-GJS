@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import {
   Card,
   CardBody,
-  CardHeader,
-  Col,
-  Row
+  CardHeader
 } from "reactstrap";
 import firebase from '../firebase'
 import {
-  Table,
-  Form
+  Table
 } from 'react-bootstrap'
-class Tables extends Component {
+
+export default class Inventory extends Component {
   constructor(props) {
     super(props);
 
@@ -75,11 +73,11 @@ class Tables extends Component {
             alert( name + ' already exist');
             console.log('exist!',userData)
           }
-          else{
-            items.push({ uid, name, description, stock, price });
-            this.setState({ items });
-            console.log('data added')
-          }
+        else{
+          items.push({ uid, name, description, stock, price });
+          this.setState({ items });
+          console.log('data added')
+        }
         }
       )
     }
@@ -113,8 +111,6 @@ class Tables extends Component {
     const { items } = this.state;
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" lg="6">
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> Inventory List
@@ -124,9 +120,7 @@ class Tables extends Component {
                   <thead>
                     <tr>
                       <th>Item Name</th>
-                      <th>Description</th>
                       <th>In Stock</th>
-                      <th>Price (RM)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -135,16 +129,11 @@ class Tables extends Component {
                         items.map(item => (
                           <tr>
                             <td>{item.name}</td>
-                            <td>{item.description}</td>
                             <td>{item.stock}</td>
-                            <td>{item.price}</td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td>No data</td>
-                          <td>No data</td>
-                          <td>No data</td>
                           <td>No data</td>
                           <td>No data</td>
                         </tr>
@@ -154,65 +143,7 @@ class Tables extends Component {
                 </Table>
               </CardBody>
             </Card>
-          </Col>
-          <Col xs="12" lg="6">
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i> Point Of Sales
-              </CardHeader>
-              <CardBody>
-                <Form>
-                  <Form.Group as={Row} controlId="formPlaintext">
-                    <Form.Label column sm="2">
-                      Select Item
-                    </Form.Label>
-                    <Col sm="6">
-                      <Form.Control as="select" value={this.props.selectValue} ref='name' onChange={this.props.handleChange}>
-                        <option>--------------------Select--------------------</option>
-                        {
-                          items.map(item => (
-                            <option value={item.name}>{item.name}</option>
-                          ))
-                        }
-                      </Form.Control>
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="formPlaintext">
-                    <Form.Label column sm="2">
-                      Price
-                    </Form.Label>
-                    <Col sm="6">
-                      <Form.Control as="select" value={this.props.selectValue} ref='name' onChange={this.props.handleChange}>
-                        <option>--------------------Select--------------------</option>
-                        {
-                          items.map(item => (
-                            <option value={item.price}>RM {item.price}</option>
-                          ))
-                        }
-                      </Form.Control>
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row}>
-                    <Form.Label column sm="2">
-                      Quantity
-                    </Form.Label>
-                    <Col sm="6">
-                      <Form.Control
-                        type="number"
-                        ref="quantity"
-                        className="Form-control"
-                        placeholder="Quantity"
-                      />
-                    </Col>
-                  </Form.Group>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
       </div>
     );
   }
 }
-
-export default Tables;
